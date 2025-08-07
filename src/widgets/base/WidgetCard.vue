@@ -42,7 +42,8 @@ const {size, resizing} = useResize(target)
 
 defineExpose({
   size,
-  resizing
+  resizing,
+  isDragging
 })
 
 function updateWidget(data: Partial<Widget>) {

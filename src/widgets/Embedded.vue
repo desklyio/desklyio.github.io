@@ -26,6 +26,7 @@ const widget = get<EmbeddedWidget>(props.widget.uuid, props.widget)
 const card = useTemplateRef<InstanceType<typeof WidgetCard>>('card')
 const cardSize = computed(() => card.value?.size)
 const cardResizing = computed(() => card.value?.resizing ?? false)
+const cardDragging = computed(() => card.value?.isDragging ?? false)
 const embeddedSize = computed(() => ({
   width: ((cardSize?.value?.width ?? 0) - 32) + 'px',
   height: ((cardSize?.value?.height ?? 0) - 32) + 'px'
@@ -68,7 +69,7 @@ watch(
       <v-textarea label="Embedded Link" variant="outlined" v-model="widget.embedded" no-resize/>
     </div>
     <div v-else>
-      <div v-show="cardResizing"
+      <div v-show="cardResizing || cardDragging"
            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; background: transparent;"
       />
       <div ref="iframeContainer" class="w-full, h-full" v-if="widget.embedded?.startsWith('<iframe')" v-html="embeddedLink"/>
