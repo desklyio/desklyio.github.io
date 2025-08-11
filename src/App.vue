@@ -2,8 +2,6 @@
 import Background from "./components/Background.vue";
 import {provide, ref} from "vue";
 import DeleteTrash from "./components/DeleteTrash.vue";
-import Fullscreen from "./components/Fullscreen.vue";
-import Options from "./components/options/Options.vue";
 import WidgetDashboard from "./components/WidgetDashboard.vue";
 import SettingsMenu from "@/components/SettingsMenu.vue";
 

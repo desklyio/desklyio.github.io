@@ -4,7 +4,6 @@ import {computed, inject, onMounted, onUnmounted, type Ref, ref, useTemplateRef,
 import type DeleteTrash from "@/components/DeleteTrash.vue";
 import type {Widget} from "@/composables/useWidgets.ts";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {Button} from "@/components/ui/button";
 
 interface Props {
   widget: Widget,
@@ -159,7 +158,7 @@ function useLongPressEdit(
     const initialX = x.value
     const initialY = y.value
 
-    const OFFSET =  7
+    const OFFSET = 7
 
     function mouseUp() {
 
@@ -221,8 +220,10 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
 </script>
 
 <template>
-  <popover :open="isWidgetEditing" >
-    <popover-trigger ref="widget-card"  as="div" class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-sm rounded-lg overflow-hidden" :class="classes" v-bind="$attrs" :style="style" >
+  <popover :open="isWidgetEditing">
+    <popover-trigger ref="widget-card" as="div"
+                     class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-sm rounded-lg overflow-hidden"
+                     :class="classes" v-bind="$attrs" :style="style">
       <slot/>
     </popover-trigger>
     <popover-content v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96">
