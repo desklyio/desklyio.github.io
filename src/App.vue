@@ -5,6 +5,7 @@ import DeleteTrash from "./components/DeleteTrash.vue";
 import Fullscreen from "./components/Fullscreen.vue";
 import Options from "./components/options/Options.vue";
 import WidgetDashboard from "./components/WidgetDashboard.vue";
+import SettingsMenu from "@/components/SettingsMenu.vue";
 
 
 const isDeleting = ref(false)
@@ -18,13 +19,8 @@ provide('trash', trash)
 </script>
 
 <template>
-  <v-layout>
-    <v-main :class="{'cursor-s-resize': isDeleting}">
-      <background/>
-      <widget-dashboard/>
-      <delete-trash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
-    </v-main>
-  </v-layout>
-  <Options/>
-  <Fullscreen/>
+  <background/>
+  <widget-dashboard/>
+  <delete-trash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
+  <SettingsMenu/>
 </template>

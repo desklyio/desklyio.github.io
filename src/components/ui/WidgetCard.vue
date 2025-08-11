@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {onClickOutside, onLongPress, useDraggable, useMouse} from "@vueuse/core";
 import {computed, inject, onMounted, onUnmounted, type Ref, ref, useTemplateRef, watch} from "vue";
-import type DeleteTrash from "../../components/DeleteTrash.vue";
-import type {Widget} from "../../composables/useWidgets.ts";
+import type DeleteTrash from "@/components/DeleteTrash.vue";
+import type {Widget} from "@/composables/useWidgets.ts";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Button} from "@/components/ui/button";
 
 interface Props {
   widget: Widget,
@@ -19,7 +21,8 @@ const props = defineProps<Props>()
 
 const emits = defineEmits<Emits>()
 
-const target = useTemplateRef<HTMLElement>('widget-card')
+const target = useTemplateRef<InstanceType<typeof PopoverTrigger>>('widget-card')
+const targetEl = computed(() => target.value?.$el)
 
 const isDeleting = inject<Ref<boolean>>('isDeleting')
 const isEditing = inject<Ref<boolean>>('isEditing')
@@ -31,14 +34,14 @@ const {
   isDraggingDisabled,
   transitionActive
 } = useWidgetDragging(
-    target,
+    targetEl,
     props,
     emits
 )
 
-const {isWidgetEditing} = useLongPressEdit(target, isDraggingDisabled)
+const {isWidgetEditing} = useLongPressEdit(targetEl, isDraggingDisabled)
 useTrashCollision(x, y)
-const {size, resizing} = useResize(target)
+const {size, resizing} = useResize(targetEl)
 
 defineExpose({
   size,
@@ -55,12 +58,13 @@ const style = computed(() => ({
   left: `${x.value}px`,
   transform: isDragging.value ? 'scale(1.01)' : '',
   transition: 'transform 0.2s ease ' + (transitionActive.value ? 'left 0.2s ease, top 0.2s ease' : ''),
-  width: props.noResize ? props.widget.width : size.value?.width ?? props.widget.width + 'px',
-  height:  props.noResize ? props.widget.height :  size.value?.height ?? props.widget.height + 'px',
+  width: (props.noResize ? props.widget.width : size.value?.width ?? props.widget.width) + 'px',
+  height: (props.noResize ? props.widget.height : size.value?.height ?? props.widget.height) + 'px',
 }))
 
 const classes = computed(() => ({
-  resize: !props.noResize
+  resize: !props.noResize && isWidgetEditing.value,
+  'outline-2 outline-offset-2 outline-solid': isWidgetEditing.value
 }))
 
 
@@ -151,6 +155,24 @@ function useLongPressEdit(
       clientX: mouse.x.value,
       clientY: mouse.y.value,
     }))
+
+    const initialX = x.value
+    const initialY = y.value
+
+    const OFFSET =  7
+
+    function mouseUp() {
+
+      if (initialX - OFFSET <= x.value && initialX + OFFSET >= x.value
+          && initialY - OFFSET <= y.value && initialY + OFFSET >= y.value
+      ) {
+        isWidgetEditing.value = true
+      }
+
+      window.removeEventListener('mouseup', mouseUp)
+    }
+
+    window.addEventListener('mouseup', mouseUp)
   }, {delay: 300})
 
   return {
@@ -199,9 +221,12 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
 </script>
 
 <template>
-
-  <div ref="widget-card" @dblclick="isWidgetEditing=true" v-bind="$attrs" :style="style" :class="classes"
-       class="widget-card absolute select-none border border-white/10 bg-white/5 p-4 backdrop-blur-sm rounded-lg overflow-hidden">
-    <slot :isEditing="isWidgetEditing"/>
-  </div>
+  <popover :open="isWidgetEditing" >
+    <popover-trigger ref="widget-card"  as="div" class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-sm rounded-lg overflow-hidden" :class="classes" v-bind="$attrs" :style="style" >
+      <slot/>
+    </popover-trigger>
+    <popover-content v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96">
+      <slot name="menu"/>
+    </popover-content>
+  </popover>
 </template>

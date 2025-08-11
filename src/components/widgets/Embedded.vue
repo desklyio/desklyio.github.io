@@ -1,6 +1,7 @@
 <script lang="ts">
 export const meta: WidgetMeta = {
   name: 'Embedded',
+  icon: 'bi-code',
   initial: {
     width: 300,
     height: 200
@@ -9,9 +10,10 @@ export const meta: WidgetMeta = {
 </script>
 
 <script setup lang="ts">
-import {useWidgets, type Widget} from "../composables/useWidgets.ts";
-import WidgetCard from "./base/WidgetCard.vue";
+import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
 import {computed, useTemplateRef, watch} from "vue";
+import WidgetCard from "@/components/ui/WidgetCard.vue";
+import {Textarea} from "@/components/ui/textarea";
 
 
 interface EmbeddedWidget extends Widget {
@@ -49,36 +51,36 @@ const embeddedLink = computed(() => {
 })
 
 watch(
-    () => embeddedSize.value,
-    (size) => {
+    () => [embeddedSize.value, embeddedLink.value],
+    () => {
       if (!widget.value.embedded?.startsWith('<iframe')) return
 
       const iframe = iframeRefContainer.value?.querySelector('iframe')
       if (!iframe) return
 
-      iframe.width = size.width
-      iframe.height = size.height
+      iframe.width = embeddedSize.value.width
+      iframe.height = embeddedSize.value.height
     }
 )
 </script>
 
 <template>
-  <widget-card ref="card" :width="500" :height="0" v-model:widget="widget" @delete="remove(props.widget.uuid)"
-               v-slot="{isEditing}">
-    <div class="text-white" v-if="isEditing">
-      <v-textarea label="Embedded Link" variant="outlined" v-model="widget.embedded" no-resize/>
-    </div>
-    <div v-else>
-      <div v-show="cardResizing || cardDragging"
+  <widget-card ref="card" v-model:widget="widget" @delete="remove(props.widget.uuid)">
+    <template #menu>
+      <label :for="`${widget.uuid}-embedded-link`">Embedded Link</label>
+    <Textarea :id="`${widget.uuid}-embedded-link`" v-model.lazy="widget.embedded" />
+    </template>
+    <template #default>
+      <div v-show="cardResizing || cardDragging || (embeddedLink ?? '').trim().length == 0"
            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; background: transparent;"
       />
-      <div ref="iframeContainer" class="w-full, h-full" v-if="widget.embedded?.startsWith('<iframe')" v-html="embeddedLink"/>
+      <div ref="iframeContainer" class="w-full, h-full" v-if="widget.embedded?.startsWith('<iframe')"
+           v-html="embeddedLink"/>
       <iframe v-else style="border-radius:12px; background: transparent !important;"
               allowtransparency="true"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"
               frameBorder="0" :src="widget.embedded" :width="embeddedSize.width" :height="embeddedSize.height"/>
-    </div>
-
+    </template>
   </widget-card>
 </template>
 

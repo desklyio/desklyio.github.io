@@ -16,7 +16,7 @@ interface WidgetConfig<T = Record<string, unknown>> {
 }
 
 interface Options {
-    backgroundSwitchMinutes: number
+    backgroundSwitchMinutes: [number]
 }
 
 interface Config {
@@ -27,7 +27,7 @@ interface Config {
 const defaults: Config = {
     widgets: [],
     options: {
-        backgroundSwitchMinutes: 30
+        backgroundSwitchMinutes: [30]
     }
 } as const
 

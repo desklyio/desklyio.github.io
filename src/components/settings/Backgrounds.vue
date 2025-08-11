@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import {useFileDialog} from "@vueuse/core";
-import {useTemplateRef} from "vue";
-import {useBackgrounds} from "../../composables/useBackgrounds.ts";
+import {computed, useTemplateRef} from "vue";
+import {useBackgrounds} from "@/composables/useBackgrounds.ts";
 import {useSortable} from '@vueuse/integrations/useSortable'
 import {v4 as uuid} from "uuid";
-import {useConfig} from "../../composables/useConfig.ts";
+import {useConfig} from "@/composables/useConfig.ts";
+import {GlassButton} from "@/components/ui/button";
+import {Dialog, DialogTrigger, DialogContent, DialogTitle, DialogHeader} from "@/components/ui/dialog";
+import {Slider} from "@/components/ui/slider";
 
-const dialogRef = useTemplateRef<InstanceType<typeof HTMLDialogElement>>('dialogRef')
 const {getBackgroundUrls, getBackgrounds} = useBackgrounds()
 const {getOptions} = useConfig()
 
@@ -38,10 +40,6 @@ const {option} = useSortable(useTemplateRef('sort'), urls, {
 option('animation', 200)
 
 
-const openDialog = () => {
-  dialogRef.value?.showModal()
-}
-
 const {open, onChange} = useFileDialog({accept: 'video/mp4'})
 
 onChange((files) => {
@@ -55,22 +53,22 @@ function handleImport() {
   open()
 }
 
-function onBackdropClick(event: Event) {
-  const dialog = dialogRef.value!
-  if (event.target === dialog) {
-    dialog.close()
-  }
-}
+const minutes = computed(() => options.value.backgroundSwitchMinutes[0] === 1 ? 'minute' : 'minutes')
 
 </script>
 
 <template>
-  <dialog
-      ref="dialogRef"
-      @click="onBackdropClick"
+  <Dialog
       class="absolute outline-0 left-1/2 top-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 bg-transparent shadow-lg backdrop:bg-black/50 open:flex open:items-center open:justify-center"
   >
-    <div class="bg-black/50 backdrop-blur-sm rounded-lg max-w-[50vw] h-full p-4 text-white flex flex-col gap-4">
+    <DialogTrigger>
+      <GlassButton icon="bi-camera-video" tooltip="Background settings"/>
+    </DialogTrigger>
+
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Background Settings</DialogTitle>
+      </DialogHeader>
       <div ref="sort" class="flex flex-row gap-4 w-full">
         <div
             class="w-[500px] group"
@@ -100,13 +98,12 @@ function onBackdropClick(event: Event) {
           +
         </button>
       </div>
-      <div class="w-1/2">
-        <label class="text-white/50">Duration in minutes</label>
-        <input type="number" class="outline-0 w-full border border-white/20 rounded-md px-3 py-2" min="1" v-model="options.backgroundSwitchMinutes"/>
+      <div class="w-full">
+        <label>Duration</label>
+        <Slider :min="1" :max="120" v-model="options.backgroundSwitchMinutes"/>
+        <small>in {{options.backgroundSwitchMinutes[0]}} {{minutes}}</small>
       </div>
-    </div>
-  </dialog>
-
-  <li class="cursor-pointer" @click="openDialog">Backgrounds</li>
+    </DialogContent>
+  </Dialog>
 </template>
 

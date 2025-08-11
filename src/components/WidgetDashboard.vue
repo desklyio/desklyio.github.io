@@ -6,7 +6,7 @@ import AddMenu from "../components/AddMenu.vue";
 const widgetComponents = Object.fromEntries(Object.values(import.meta.glob<{
       default: Component<{ widget: Widget }>
       meta: WidgetMeta
-    }>(['../widgets/*.vue'], {
+    }>(['./widgets/*.vue'], {
       eager: true,
       base: './'
     })).map(widget => [widget.meta.name, {component: widget.default, meta: widget.meta}])
@@ -16,7 +16,7 @@ const isDeleting = inject('isDeleting')
 
 const {widgets} = useWidgets()
 
-const widgetsAdd = Object.fromEntries(Object.entries(widgetComponents).map(([name, w]) => [name, w.meta.initial]));
+const widgetsAdd = Object.fromEntries(Object.entries(widgetComponents).map(([name, w]) => [name, w.meta]));
 </script>
 
 <template>

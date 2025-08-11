@@ -3,6 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import tailwindcss from '@tailwindcss/vite'
 import {viteSingleFile} from "vite-plugin-singlefile"
+import path from "node:path";
 
 
 export default defineConfig((config) => ({
@@ -12,5 +13,10 @@ export default defineConfig((config) => ({
         tailwindcss(),
         ...(config.mode === 'single' ? [viteSingleFile()] : [])
     ],
-    base: './'
+    base: './',
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src'),
+        },
+    },
 }))

@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 declare interface WidgetMeta {
-    name: string,
+    icon: string
+    name: string
     initial: Widget
 }

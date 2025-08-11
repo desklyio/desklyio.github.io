@@ -1,6 +1,7 @@
 <script lang="ts">
 export const meta: WidgetMeta = {
   name: 'Time',
+  icon: 'bi-clock',
   initial: {
     width: 300,
     height: 170
@@ -12,8 +13,8 @@ export const meta: WidgetMeta = {
 
 import {onMounted, onUnmounted, ref} from "vue";
 import {useDateFormat} from "@vueuse/core";
-import WidgetCard from "./base/WidgetCard.vue";
-import {useWidgets, type Widget} from "../composables/useWidgets.ts";
+import WidgetCard from "@/components/ui/WidgetCard.vue";
+import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
 
 const props = defineProps<{ widget: Widget }>()
 
