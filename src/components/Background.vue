@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import {computed, onMounted, onUnmounted, ref, watch} from "vue";
 import {watchOnce} from "@vueuse/core";
-import {useConfig} from "../composables/useConfig.ts";
-import {useBackgrounds} from "../composables/useBackgrounds.ts";
+import {useBackground} from "@/composables/useBackground.ts";
+import {useOptions} from "@/composables/useOptions.ts";
 
-const {getBackgroundUrls} = useBackgrounds()
-const {getOptions} = useConfig()
+const {getUrls} = useBackground()
+const {get} = useOptions()
 
-const urls = getBackgroundUrls()
-const options = getOptions()
+const urls = getUrls()
+const backgroundDuration = get('backgroundDuration')
 
 const counter = ref(0)
 const next = computed(() => urls.value[counter.value]?.url)
@@ -45,10 +45,10 @@ function getSwitchInterval() {
     if (urls.value.length > 0) {
       counter.value = (counter.value + 1) % urls.value.length
     }
-  }, options.value.backgroundSwitchMinutes * 1000 * 60)
+  }, backgroundDuration.value * 1000 * 60)
 }
 
-watch(() => options.value.backgroundSwitchMinutes, () => {
+watch(() => backgroundDuration.value, () => {
   clearInterval(id.value)
   id.value = getSwitchInterval()
 })
