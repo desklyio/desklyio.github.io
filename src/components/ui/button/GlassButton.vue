@@ -20,8 +20,10 @@ const emits = defineEmits(['click'])
                 <i :class="icon"/>
               </span>
       </TooltipTrigger>
-      <TooltipContent v-if="tooltip" :side="side ?? 'right'">
-        {{ tooltip }}
+      <TooltipContent v-if="tooltip || 'tooltip' in $slots" :side="side ?? 'right'">
+        <slot name="tooltip">
+          {{ tooltip }}
+        </slot>
       </TooltipContent>
     </Tooltip>
   </TooltipProvider>

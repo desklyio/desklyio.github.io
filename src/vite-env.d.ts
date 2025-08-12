@@ -4,6 +4,7 @@ declare interface WidgetMeta {
     icon: string
     name: string
     initial: Widget
+    shortcut: string
 }
 
 

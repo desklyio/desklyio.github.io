@@ -2,6 +2,7 @@
 export const meta: WidgetMeta = {
   name: 'Clipboard History',
   icon: 'bi-clipboard',
+  shortcut: 'Shift+Ctrl+C',
   initial: {
     history: '[]',
     width: 300,
@@ -12,7 +13,7 @@ export const meta: WidgetMeta = {
 
 <script setup lang="ts">
 
-import WidgetCard from "@/components/ui/WidgetCard.vue";
+import {WidgetCard} from "@/components/ui/widgetcard";
 import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {toast} from "vue-sonner";

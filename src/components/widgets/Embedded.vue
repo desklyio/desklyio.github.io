@@ -2,6 +2,7 @@
 export const meta: WidgetMeta = {
   name: 'Embedded',
   icon: 'bi-code',
+  shortcut: 'Shift+Ctrl+E',
   initial: {
     width: 300,
     height: 200
@@ -12,7 +13,7 @@ export const meta: WidgetMeta = {
 <script setup lang="ts">
 import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
 import {computed, useTemplateRef, watch} from "vue";
-import WidgetCard from "@/components/ui/WidgetCard.vue";
+import {WidgetCard} from "@/components/ui/widgetcard";
 import {Textarea} from "@/components/ui/textarea";
 
 

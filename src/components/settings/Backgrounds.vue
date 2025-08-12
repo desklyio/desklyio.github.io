@@ -53,7 +53,14 @@ watchEffect(() => {
 <template>
   <Dialog v-model:open="openDialog">
     <DialogTrigger>
-      <GlassButton icon="bi-camera-video" tooltip="Background settings"/>
+      <GlassButton icon="bi-camera-video">
+        <template #tooltip>
+          <div class="flex gap-2">
+            <span>Background settings</span>
+            <span class="text-white/20">Shift+Ctrl+B</span>
+          </div>
+        </template>
+      </GlassButton>
     </DialogTrigger>
 
     <DialogContent as="div">

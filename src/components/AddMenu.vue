@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, watch, watchEffect} from "vue";
 import {v4 as uuid} from 'uuid'
-import {useWindowSize} from '@vueuse/core'
+import {useMagicKeys, useWindowSize} from '@vueuse/core'
 import {useWidgets, type Widget} from "../composables/useWidgets.ts";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {GlassButton} from "@/components/ui/button";
 
-defineProps<{
+const props = defineProps<{
   widgets: Record<string, WidgetMeta>
 }>()
 
@@ -17,6 +17,15 @@ const centerPosition = computed(() => ({
   x: Math.floor(window.width.value / 2),
   y: Math.floor(window.height.value / 2),
 }))
+
+const keys = useMagicKeys()
+
+Object.values(props.widgets).map(meta => {
+  const key = keys[meta.shortcut]
+  watch(key, (v) => {
+    if (v) addWidget(meta.name, meta.initial)
+  })
+})
 
 
 function addWidget(name: string, widget: Widget & object) {
@@ -37,7 +46,14 @@ function addWidget(name: string, widget: Widget & object) {
     </DropdownMenuTrigger>
     <DropdownMenuContent align="center" side="top" class="bg-transparent border-none pl-2 shadow-none">
       <DropdownMenuItem :key="name" v-for="(widget, name) in widgets" class="focus:bg-transparent hover:bg-transparent">
-        <GlassButton @click="addWidget(name, widget.initial)" :tooltip="widget.name" :icon="widget.icon"/>
+        <GlassButton @click="addWidget(name, widget.initial)" :icon="widget.icon">
+          <template #tooltip>
+            <div class="flex gap-2">
+              <span>{{ widget.name }}</span>
+              <span class="text-white/20">{{ widget.shortcut }}</span>
+            </div>
+          </template>
+        </GlassButton>
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>

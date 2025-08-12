@@ -6,11 +6,8 @@ import {ref, watchEffect} from "vue";
 import {useMagicKeys} from "@vueuse/core";
 
 const SHORTCUTS = {
-  'Open shortcuts': 'Shift + Control + H',
-  'Open background settings': 'Shift + Control + B',
-  'Next background': 'Shift + Control + N',
-  'Previous background': 'Shift + Control + P',
-  'Switch fullscreen mode': 'Shift + Control + F',
+  'Next background': 'Shift+Ctrl+N',
+  'Previous background': 'Shift+Ctrl+P',
 }
 
 
@@ -29,7 +26,14 @@ watchEffect(() => {
 <template>
   <Dialog v-model:open="openDialog">
     <DialogTrigger>
-      <GlassButton icon="bi-keyboard" tooltip="Shortcuts"/>
+      <GlassButton icon="bi-keyboard">
+        <template #tooltip>
+          <div class="flex gap-2">
+            <span>Shortcuts</span>
+            <span class="text-white/20">Shift+Ctrl+H</span>
+          </div>
+        </template>
+      </GlassButton>
     </DialogTrigger>
 
     <DialogContent as="div">
