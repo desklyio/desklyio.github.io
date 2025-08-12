@@ -165,6 +165,7 @@ function useLongPressEdit(
       if (initialX - OFFSET <= x.value && initialX + OFFSET >= x.value
           && initialY - OFFSET <= y.value && initialY + OFFSET >= y.value
       ) {
+        isDraggingDisabled.value = true
         isWidgetEditing.value = true
       }
 

@@ -19,6 +19,10 @@
     font-family: Karla;
 }
 
+body {
+    scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
 .tiptap {
     & h1 {
         @apply text-2xl;
@@ -182,11 +186,12 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
 }
 

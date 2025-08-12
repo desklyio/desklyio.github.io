@@ -20,7 +20,7 @@ const props = defineProps<{ widget: Widget }>()
 
 const {get, remove} = useWidgets()
 
-const widget = get<Widget>(props.widget.uuid, Object.assign(props.widget, {width: 10, height: 10}))
+const widget = get<Widget>(props.widget.uuid, props.widget)
 
 const rawdate = ref(new Date)
 let timer: number | null = null

@@ -4,6 +4,8 @@ import {provide, ref} from "vue";
 import DeleteTrash from "./components/DeleteTrash.vue";
 import WidgetDashboard from "./components/WidgetDashboard.vue";
 import SettingsMenu from "@/components/SettingsMenu.vue";
+import { Toaster } from '@/components/ui/sonner'
+import 'vue-sonner/style.css'
 
 
 const isDeleting = ref(false)
@@ -21,4 +23,5 @@ provide('trash', trash)
   <widget-dashboard/>
   <delete-trash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
   <SettingsMenu/>
+  <Toaster />
 </template>
