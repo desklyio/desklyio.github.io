@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {useFileDialog} from "@vueuse/core";
-import {computed} from "vue";
+import {useFileDialog, useMagicKeys} from "@vueuse/core";
+import {computed, ref, watchEffect} from "vue";
 import {v4 as uuid} from "uuid";
 import {Button, GlassButton} from "@/components/ui/button";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
@@ -38,10 +38,20 @@ function handleImport() {
 
 const minutes = computed(() => backgroundDuration.value === 1 ? 'minute' : 'minutes')
 
+const openDialog = ref(false)
+
+const {Shift_Ctrl_b} = useMagicKeys()
+
+watchEffect(() => {
+  if (Shift_Ctrl_b.value) {
+    openDialog.value = true
+  }
+})
+
 </script>
 
 <template>
-  <Dialog>
+  <Dialog v-model:open="openDialog">
     <DialogTrigger>
       <GlassButton icon="bi-camera-video" tooltip="Background settings"/>
     </DialogTrigger>

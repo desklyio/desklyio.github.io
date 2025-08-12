@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref, watch} from "vue";
-import {watchOnce} from "@vueuse/core";
+import {computed, onMounted, onUnmounted, ref, watch, watchEffect} from "vue";
+import {useMagicKeys, watchOnce} from "@vueuse/core";
 import {useBackground} from "@/composables/useBackground.ts";
 import {useOptions} from "@/composables/useOptions.ts";
 
@@ -22,6 +22,9 @@ const primaryActive = computed(() => active.value === 'primary')
 
 const id = ref(0)
 
+const { Shift_Ctrl_n, Shift_Ctrl_p} = useMagicKeys()
+
+
 async function loadVideo() {
   if ('primary' === active.value) {
     secondary.value!.src = next.value
@@ -32,6 +35,23 @@ async function loadVideo() {
   }
 }
 
+function nextVideo(next = 1) {
+  counter.value = Math.max(counter.value + next, 0) % urls.value.length
+}
+
+function getSwitchInterval() {
+  return setInterval(() => {
+    if (urls.value.length > 0) {
+      nextVideo()
+    }
+  }, backgroundDuration.value * 1000 * 60)
+}
+
+watchEffect(() => {
+  if(Shift_Ctrl_n.value) nextVideo()
+  if(Shift_Ctrl_p.value) nextVideo(-1)
+})
+
 watchOnce(urls, () => {
   loadVideo()
 })
@@ -39,14 +59,6 @@ watchOnce(urls, () => {
 watch(counter, () => {
   loadVideo()
 }, {flush: 'post'});
-
-function getSwitchInterval() {
-  return setInterval(() => {
-    if (urls.value.length > 0) {
-      counter.value = (counter.value + 1) % urls.value.length
-    }
-  }, backgroundDuration.value * 1000 * 60)
-}
 
 watch(() => backgroundDuration.value, () => {
   clearInterval(id.value)

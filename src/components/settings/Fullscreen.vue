@@ -4,22 +4,14 @@ import {computed} from "vue";
 import {useFullscreen} from '@vueuse/core'
 import {GlassButton} from "@/components/ui/button";
 
-const fullscreen = useFullscreen(document.body)
+const {toggle, isFullscreen} = useFullscreen()
 
-const icon = computed(() => fullscreen.isFullscreen.value ? 'bi-fullscreen-exit' : 'bi-fullscreen')
-const tooltip = computed(() => fullscreen.isFullscreen.value ? 'Exit fullscreen' : 'Fullscreen')
-
-function handleClick() {
-  if (fullscreen.isFullscreen.value) {
-    fullscreen.exit()
-  } else {
-    fullscreen.enter()
-  }
-}
+const icon = computed(() => isFullscreen.value ? 'bi-fullscreen-exit' : 'bi-fullscreen')
+const tooltip = computed(() => isFullscreen.value ? 'Exit fullscreen' : 'Fullscreen')
 </script>
 
 <template>
-  <GlassButton :icon="icon" @click="handleClick" :tooltip="tooltip"/>
+  <GlassButton :icon="icon" @click="toggle" :tooltip="tooltip"/>
 </template>
 
 <style scoped>
