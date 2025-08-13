@@ -3,18 +3,9 @@ import Dexie, {type EntityTable} from "dexie";
 import {useQuery} from "./useQuery.ts";
 import {computed} from "vue";
 
-export interface Widget {
-    uuid: string
-    name: string
-    positionX: number
-    positionY: number
-    width: number
-    height: number
-}
-
 const database = new Dexie('WidgetsDatabase') as Dexie & {
     widgets: EntityTable<
-        Widget,
+        WidgetProps,
         'uuid'
     >;
 };
@@ -27,14 +18,14 @@ database.version(1).stores({
 export function useWidgets() {
     const widgets = useQuery(() => database.widgets.toArray())
 
-    function get<Data>(uuid: string, def: (Widget & Partial<Data>) | null = null) {
+    function get<Data>(uuid: string, def: (WidgetProps & Partial<Data>) | null = null) {
         const widget = useQuery(() => database.widgets.get(uuid))
 
 
         return computed({
-            get: () => new Proxy((widget.value ?? def ?? {}) as Widget & Partial<Data>, {
+            get: () => new Proxy((widget.value ?? def ?? {}) as WidgetProps & Partial<Data>, {
                 set: (_, p, value) => {
-                    const newWidget = Object.assign(widget.value ?? {}, {[p]: value}) as Widget
+                    const newWidget = Object.assign(widget.value ?? {}, {[p]: value}) as WidgetProps
                     update(newWidget)
                     return true
                 }
@@ -46,7 +37,7 @@ export function useWidgets() {
         })
     }
 
-    function add<T>(widget: Widget & T) {
+    function add<T>(widget: WidgetProps & T) {
         database.transaction('rw', [database.widgets], async () => {
             await database.widgets.put(widget)
         })
@@ -58,7 +49,7 @@ export function useWidgets() {
         })
     }
 
-    function update(widget: Widget) {
+    function update(widget: WidgetProps) {
         database.transaction('rw', [database.widgets], async () => {
             await database.widgets.update(widget.uuid, widget)
         })

@@ -2,7 +2,7 @@
 import {computed, watch, watchEffect} from "vue";
 import {v4 as uuid} from 'uuid'
 import {useMagicKeys, useWindowSize} from '@vueuse/core'
-import {useWidgets, type Widget} from "../composables/useWidgets.ts";
+import {useWidgets, type WidgetProps} from "../composables/useWidgets.ts";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {GlassButton} from "@/components/ui/button";
 
@@ -28,7 +28,7 @@ Object.values(props.widgets).map(meta => {
 })
 
 
-function addWidget(name: string, widget: Widget & object) {
+function addWidget(name: string, widget: WidgetProps & object) {
   add({
     ...widget,
     uuid: uuid(),

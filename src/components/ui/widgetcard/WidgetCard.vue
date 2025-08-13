@@ -2,16 +2,15 @@
 import {onClickOutside, onLongPress, useDraggable, useMouse} from "@vueuse/core";
 import {computed, inject, onMounted, onUnmounted, type Ref, ref, useTemplateRef, watch} from "vue";
 import type DeleteTrash from "@/components/DeleteTrash.vue";
-import type {Widget} from "@/composables/useWidgets.ts";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 
 interface Props {
-  widget: Widget,
+  widget: WidgetProps,
   noResize?: true
 }
 
 interface Emits {
-  (e: 'update:widget', v: Widget): void
+  (e: 'update:widget', v: WidgetProps): void
 
   (e: 'delete'): void
 }
@@ -48,7 +47,7 @@ defineExpose({
   isDragging
 })
 
-function updateWidget(data: Partial<Widget>) {
+function updateWidget(data: Partial<WidgetProps>) {
   emits('update:widget', Object.assign(props.widget, data))
 }
 
@@ -223,9 +222,9 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
 <template>
   <popover :open="isWidgetEditing">
     <popover-trigger ref="widget-card" as="div"
-                     class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-sm rounded-lg overflow-hidden"
+                     class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-lg rounded-lg overflow-hidden"
                      :class="classes" v-bind="$attrs" :style="style">
-      <slot/>
+      <slot :isDragging="isDragging" :isEditing="isWidgetEditing" />
     </popover-trigger>
     <popover-content v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96">
       <slot name="menu"/>

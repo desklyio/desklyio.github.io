@@ -14,6 +14,9 @@ const [useProvideCarousel, useInjectCarousel] = createInjectionState(
 
     const [emblaNode, emblaApi] = emblaCarouselVue({
       ...opts,
+      watchDrag: (_, mutations) => {
+          return !mutations.isTrusted
+      },
       axis: orientation === "horizontal" ? "x" : "y",
     }, [...unref(plugins ?? []), WheelGesturesPlugin()])
 
@@ -23,13 +26,20 @@ const [useProvideCarousel, useInjectCarousel] = createInjectionState(
     function scrollNext() {
       emblaApi.value?.scrollNext()
     }
+    function scrollTo(index: number) {
+      emblaApi.value?.scrollTo(index)
+    }
 
     const canScrollNext = ref(false)
     const canScrollPrev = ref(false)
+    const selectedIndex = ref(0);
+    const scrollSnaps = ref<number[]>([])
 
     function onSelect(api: CarouselApi) {
       canScrollNext.value = api?.canScrollNext() || false
       canScrollPrev.value = api?.canScrollPrev() || false
+      selectedIndex.value = api?.selectedScrollSnap() || 0;
+      scrollSnaps.value = api?.scrollSnapList() || [];
     }
 
     onMounted(() => {
@@ -43,7 +53,7 @@ const [useProvideCarousel, useInjectCarousel] = createInjectionState(
       emits("init-api", emblaApi.value)
     })
 
-    return { carouselRef: emblaNode, carouselApi: emblaApi, canScrollPrev, canScrollNext, scrollPrev, scrollNext, orientation }
+    return { carouselRef: emblaNode, carouselApi: emblaApi, canScrollPrev, canScrollNext, selectedIndex, scrollSnaps, scrollPrev, scrollNext, scrollTo, orientation }
   },
 )
 

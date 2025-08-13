@@ -1,25 +1,14 @@
-<script lang="ts">
-export const meta: WidgetMeta = {
-  name: 'Clipboard History',
-  icon: 'bi-clipboard',
-  shortcut: 'Shift+Ctrl+C',
-  initial: {
-    history: '[]',
-    width: 300,
-    height: 170
-  }
-}
-</script>
-
 <script setup lang="ts">
 
 import {WidgetCard} from "@/components/ui/widgetcard";
-import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
+import {useWidgets} from "@/composables/useWidgets.ts";
 import {computed, onMounted, onUnmounted, ref} from "vue";
 import {toast} from "vue-sonner";
 import {Button} from "@/components/ui/button";
+import ClipboardItem from "@/components/widgets/clipboard/ClipboardItem.vue";
+import {ScrollArea} from "@/components/ui/scroll-area";
 
-interface ClipboardWidget extends Widget {
+interface ClipboardWidget extends WidgetProps {
   history: string,
 }
 
@@ -43,7 +32,8 @@ async function copy(text: string) {
   window.navigator.clipboard.writeText(text).then(() => {
     toast('Successful copied from history')
     currentCopied.value = text
-  }).catch(() => {})
+  }).catch(() => {
+  })
 }
 
 onMounted(() => {
@@ -51,7 +41,7 @@ onMounted(() => {
     window.navigator.clipboard.readText().then(
         text => {
           if (!history.value.includes(text)) {
-            history.value = [...history.value, text]
+            history.value = [...history.value, text].filter(s => s.trim().length > 0)
             currentCopied.value = text
           }
         }
@@ -66,23 +56,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <widget-card v-model:widget="widget" @delete="remove(props.widget.uuid)">
+  <WidgetCard v-model:widget="widget" @delete="remove(props.widget.uuid)">
     <template #default>
-      <div class="h-full rounded-md not-hover:overflow-hidden hover:overflow-x-auto ">
-        <div class="flex flex-col text-white ">
-          <div :key="index" v-for="(item, index) in history" @click="copy(item)" class="hover:bg-white/10 cursor-pointer last:rounded-b-md not-last:border-b not-last:border-white/10 flex pt-2 px-2">
-            <div class="w-[10px] h-full">
-              <i v-if="currentCopied === item" class="bi-check text-white"/>
-            </div>
-            <pre class="text-wrap font-mono">
-           {{ item.trim() }}
-        </pre>
-          </div>
+      <ScrollArea class="h-full rounded-md">
+        <div class="flex flex-col pr-2 text-white ">
+          <ClipboardItem :key="index" v-for="(text, index) in history" :copied="text === currentCopied" :text="text"
+                         @copied="copy"/>
         </div>
-      </div>
+      </ScrollArea>
     </template>
-   <template #menu>
-     <Button @click="history = []">Clear History</Button>
-   </template>
-  </widget-card>
+    <template #menu>
+      <Button @click="history = []">Clear History</Button>
+    </template>
+  </WidgetCard>
 </template>

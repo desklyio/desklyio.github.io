@@ -1,16 +1,3 @@
-<script lang="ts">
-export const meta: WidgetMeta = {
-  name: 'Notes',
-  icon: 'bi-text-indent-left',
-  shortcut: 'Shift+Ctrl+T',
-  initial: {
-    content: '<h1>Hello World</h1>',
-    width: 300,
-    height: 200
-  }
-}
-</script>
-
 <script setup lang="ts">
 import {EditorContent, useEditor} from "@tiptap/vue-3";
 import {StarterKit} from "@tiptap/starter-kit";
@@ -18,14 +5,14 @@ import {TaskList} from "@tiptap/extension-task-list";
 import {TaskItem} from "@tiptap/extension-task-item";
 import {Link} from "@tiptap/extension-link";
 import {WidgetCard} from "@/components/ui/widgetcard";
-import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
+import {useWidgets} from "@/composables/useWidgets.ts";
 
 
 interface NoticeData {
   content: string
 }
 
-const props = defineProps<{ widget: Widget & Partial<NoticeData> }>()
+const props = defineProps<{ widget: WidgetProps & Partial<NoticeData> }>()
 
 const {get, remove} = useWidgets()
 
@@ -71,9 +58,9 @@ const editor = useEditor({
 </script>
 
 <template>
-  <widget-card v-model:widget="widget" @delete="remove(props.widget.uuid)">
+  <WidgetCard v-model:widget="widget" @delete="remove(props.widget.uuid)">
     <div class="text-white">
       <EditorContent :editor="editor"/>
     </div>
-  </widget-card>
+  </WidgetCard>
 </template>

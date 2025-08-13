@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import {type Component, inject} from "vue";
-import {useWidgets, type Widget} from "../composables/useWidgets.ts";
+import {inject} from "vue";
+import {useWidgets,} from "../composables/useWidgets.ts";
 import AddMenu from "../components/AddMenu.vue";
 
-const widgetComponents = Object.fromEntries(Object.values(import.meta.glob<{
-      default: Component<{ widget: Widget }>
-      meta: WidgetMeta
-    }>(['./widgets/*.vue'], {
+const widgetComponents = Object.fromEntries(Object.values(import.meta.glob<WidgetComponent>(['./widgets/**/index.ts'], {
       eager: true,
-      base: './'
-    })).map(widget => [widget.meta.name, {component: widget.default, meta: widget.meta}])
+      base: './',
+      import: 'default',
+    })).map(widget => [widget.meta.name, {component: widget.component, meta: widget.meta}])
 )
 
 const isDeleting = inject('isDeleting')

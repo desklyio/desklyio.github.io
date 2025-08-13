@@ -1,23 +1,11 @@
-<script lang="ts">
-export const meta: WidgetMeta = {
-  name: 'Embedded',
-  icon: 'bi-code',
-  shortcut: 'Shift+Ctrl+E',
-  initial: {
-    width: 300,
-    height: 200
-  }
-}
-</script>
-
 <script setup lang="ts">
-import {useWidgets, type Widget} from "@/composables/useWidgets.ts";
+import {useWidgets} from "@/composables/useWidgets.ts";
 import {computed, useTemplateRef, watch} from "vue";
 import {WidgetCard} from "@/components/ui/widgetcard";
 import {Textarea} from "@/components/ui/textarea";
 
 
-interface EmbeddedWidget extends Widget {
+interface EmbeddedWidget extends WidgetProps {
   embedded: string,
 }
 
@@ -66,7 +54,7 @@ watch(
 </script>
 
 <template>
-  <widget-card ref="card" v-model:widget="widget" @delete="remove(props.widget.uuid)">
+  <WidgetCard ref="card" v-model:widget="widget" @delete="remove(props.widget.uuid)">
     <template #menu>
       <label :for="`${widget.uuid}-embedded-link`">Embedded Link</label>
     <Textarea :id="`${widget.uuid}-embedded-link`" v-model.lazy="widget.embedded" />
@@ -82,7 +70,7 @@ watch(
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"
               frameBorder="0" :src="widget.embedded" :width="embeddedSize.width" :height="embeddedSize.height"/>
     </template>
-  </widget-card>
+  </WidgetCard>
 </template>
 
 <style scoped>
