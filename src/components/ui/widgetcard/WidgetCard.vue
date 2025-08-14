@@ -21,6 +21,7 @@ const emits = defineEmits<Emits>()
 
 const target = useTemplateRef<InstanceType<typeof PopoverTrigger>>('widget-card')
 const targetEl = computed(() => target.value?.$el)
+const menuEl = useTemplateRef<InstanceType<typeof HTMLDivElement>>('menu')
 
 const isDeleting = inject<Ref<boolean>>('isDeleting')
 const isEditing = inject<Ref<boolean>>('isEditing')
@@ -37,7 +38,7 @@ const {
     emits
 )
 
-const {isWidgetEditing} = useLongPressEdit(targetEl, isDraggingDisabled)
+const {isWidgetEditing} = useLongPressEdit(targetEl, menuEl, isDraggingDisabled)
 useTrashCollision(x, y)
 const {size, resizing} = useResize(targetEl)
 
@@ -133,13 +134,15 @@ function useTrashCollision(x: Ref<number>, y: Ref<number>) {
 
 function useLongPressEdit(
     targetRef: Ref<HTMLElement | null>,
+    menuRef: Ref<HTMLElement | null>,
     isDraggingDisabled: Ref<boolean>,
 ) {
-
   const isWidgetEditing = ref(false)
 
-  onClickOutside(targetRef, () => {
-    isWidgetEditing.value = false
+  onClickOutside(targetRef, (e) => {
+    if (!menuRef.value?.contains(e.target as HTMLElement)) {
+      isWidgetEditing.value = false
+    }
   })
 
   onLongPress(targetRef, () => {
@@ -224,10 +227,12 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
     <popover-trigger ref="widget-card" as="div"
                      class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-lg rounded-lg overflow-hidden"
                      :class="classes" v-bind="$attrs" :style="style">
-      <slot :isDragging="isDragging" :isEditing="isWidgetEditing" />
+      <slot :isDragging="isDragging" :isEditing="isWidgetEditing"/>
     </popover-trigger>
-    <popover-content v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96">
-      <slot name="menu"/>
+    <popover-content v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96" :data-uuid="widget.uuid">
+      <div ref="menu">
+        <slot name="menu"/>
+      </div>
     </popover-content>
   </popover>
 </template>

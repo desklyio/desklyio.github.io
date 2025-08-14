@@ -2,10 +2,10 @@
 import Background from "./components/Background.vue";
 import {provide, ref} from "vue";
 import DeleteTrash from "./components/DeleteTrash.vue";
-import WidgetDashboard from "./components/WidgetDashboard.vue";
 import SettingsMenu from "@/components/SettingsMenu.vue";
 import { Toaster } from '@/components/ui/sonner'
 import 'vue-sonner/style.css'
+import {Dashboard} from "@/components/ui/dashboard";
 
 
 const isDeleting = ref(false)
@@ -20,8 +20,8 @@ provide('trash', trash)
 
 <template>
   <background/>
-  <widget-dashboard/>
-  <delete-trash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
+  <Dashboard/>
+  <DeleteTrash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
   <SettingsMenu/>
   <Toaster />
 </template>

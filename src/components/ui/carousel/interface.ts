@@ -19,6 +19,7 @@ export interface CarouselProps {
 
 export interface CarouselEmits {
   (e: "init-api", payload: UnwrapRefCarouselApi): void
+  (e: "selected", index: number): void
 }
 
 export interface WithClassAsProps {

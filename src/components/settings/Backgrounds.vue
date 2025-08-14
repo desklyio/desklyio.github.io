@@ -35,9 +35,6 @@ onChange((files) => {
 function handleImport() {
   open()
 }
-
-const minutes = computed(() => backgroundDuration.value === 1 ? 'minute' : 'minutes')
-
 const openDialog = ref(false)
 
 const {Shift_Ctrl_b} = useMagicKeys()
@@ -96,7 +93,7 @@ watchEffect(() => {
       <div class="w-full">
         <label>Duration</label>
         <Slider :min="1" :max="120" v-model="backgroundDurationRef"/>
-        <small>in {{ backgroundDuration }} {{ minutes }}</small>
+        <small>in {{ $t('message.minute', backgroundDuration) }}</small>
       </div>
     </DialogContent>
   </Dialog>

@@ -11,7 +11,7 @@ const database = new Dexie('WidgetsDatabase') as Dexie & {
 };
 
 database.version(1).stores({
-    widgets: 'uuid, name',
+    widgets: 'uuid, name, tabUuid',
 })
 
 

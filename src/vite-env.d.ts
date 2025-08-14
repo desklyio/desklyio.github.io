@@ -3,6 +3,7 @@
 declare type WidgetProps<T = unknown> = {
     uuid: string
     name: string
+    tabUuid: string
     positionX: number
     positionY: number
     width: number

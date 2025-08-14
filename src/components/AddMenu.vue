@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import {computed, watch, watchEffect} from "vue";
+import {computed, watch} from "vue";
 import {v4 as uuid} from 'uuid'
 import {useMagicKeys, useWindowSize} from '@vueuse/core'
-import {useWidgets, type WidgetProps} from "../composables/useWidgets.ts";
+import {useWidgets} from "../composables/useWidgets.ts";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {GlassButton} from "@/components/ui/button";
 
 const props = defineProps<{
   widgets: Record<string, WidgetMeta>
+  tabUuid: string
 }>()
 
 const window = useWindowSize()
@@ -23,7 +24,7 @@ const keys = useMagicKeys()
 Object.values(props.widgets).map(meta => {
   const key = keys[meta.shortcut]
   watch(key, (v) => {
-    if (v) addWidget(meta.name, meta.initial)
+    if (v) addWidget(meta.name, Object.assign(meta.initial, {tabUuid: props.tabUuid}) as WidgetProps)
   })
 })
 
@@ -33,6 +34,7 @@ function addWidget(name: string, widget: WidgetProps & object) {
     ...widget,
     uuid: uuid(),
     name: name,
+    tabUuid: props.tabUuid,
     positionX: centerPosition.value.x,
     positionY: centerPosition.value.y,
   })
