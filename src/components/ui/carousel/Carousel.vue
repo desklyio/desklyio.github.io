@@ -22,6 +22,8 @@ defineExpose({
 })
 
 function onKeyDown(event: KeyboardEvent) {
+  if (props.noKey) return;
+
   const prevKey = props.orientation === "vertical" ? "ArrowUp" : "ArrowLeft"
   const nextKey = props.orientation === "vertical" ? "ArrowDown" : "ArrowRight"
 

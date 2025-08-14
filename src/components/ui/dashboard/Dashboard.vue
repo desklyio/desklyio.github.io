@@ -29,7 +29,7 @@ function handleRemoveTab(index: number) {
 </script>
 
 <template>
-  <Carousel :opts="{watchDrag: false}" @selected="(index) => currentTabIndex = index" class="absolute top-0">
+  <Carousel no-key :opts="{watchDrag: false}" @selected="(index) => currentTabIndex = index" class="absolute top-0">
     <CarouselContent class="w-screen h-screen focus-visible:outline-0">
       <CarouselItem :key="tab.uuid" v-for="tab in tabs ?? []" class="relative">
         <Tab :tab-uuid="tab.uuid" :widget-components="widgetComponents"/>

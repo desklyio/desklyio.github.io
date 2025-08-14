@@ -15,6 +15,7 @@ export interface CarouselProps {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
+  noKey?: boolean
 }
 
 export interface CarouselEmits {
