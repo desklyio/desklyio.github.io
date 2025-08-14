@@ -26,7 +26,7 @@ watchEffect(() => {
 <template>
   <Dialog v-model:open="openDialog">
     <DialogTrigger>
-      <GlassButton icon="bi-keyboard">
+      <GlassButton side="left" icon="bi-keyboard">
         <template #tooltip>
           <div class="flex gap-2">
             <span>Shortcuts</span>

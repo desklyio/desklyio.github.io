@@ -11,7 +11,7 @@ const tooltip = computed(() => isFullscreen.value ? 'Exit fullscreen' : 'Fullscr
 </script>
 
 <template>
-  <GlassButton :icon="icon" @click="toggle" :tooltip="tooltip"/>
+  <GlassButton side="left" :icon="icon" @click="toggle" :tooltip="tooltip"/>
 </template>
 
 <style scoped>

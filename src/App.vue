@@ -19,9 +19,12 @@ provide('trash', trash)
 </script>
 
 <template>
-  <background/>
-  <Dashboard/>
-  <DeleteTrash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
-  <SettingsMenu/>
-  <Toaster />
+  <div  :class="{'cursor-s-resize': isDeleting}">
+    <background/>
+    <Dashboard/>
+    <DeleteTrash ref="trash" :is-deleting="isDeleting" :is-editing="isEditing"/>
+    <SettingsMenu/>
+    <Toaster />
+  </div>
+
 </template>

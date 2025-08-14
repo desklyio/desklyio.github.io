@@ -3,7 +3,7 @@ import AddMenu from "@/components/AddMenu.vue";
 import {Carousel, CarouselContent, CarouselDots, CarouselItem} from "@/components/ui/carousel";
 import Tab from "./Tab.vue";
 import {useTabs} from "@/composables/useTabs.ts";
-import {computed, ref} from "vue";
+import {computed, inject, provide, ref} from "vue";
 import {useWidgets} from "@/composables/useWidgets.ts";
 
 const widgetComponents = Object.fromEntries(Object.values(import.meta.glob<WidgetComponent>(['@/components/widgets/**/index.ts'], {
@@ -29,8 +29,8 @@ function handleRemoveTab(index: number) {
 </script>
 
 <template>
-  <Carousel no-key :opts="{watchDrag: false}" @selected="(index) => currentTabIndex = index" class="absolute top-0">
-    <CarouselContent class="w-screen h-screen focus-visible:outline-0">
+  <Carousel no-key :opts="{watchDrag: false}" @selected="(index) => currentTabIndex = index" class="absolute top-0 focus-visible:outline-0">
+    <CarouselContent class="w-screen h-screen">
       <CarouselItem :key="tab.uuid" v-for="tab in tabs ?? []" class="relative">
         <Tab :tab-uuid="tab.uuid" :widget-components="widgetComponents"/>
       </CarouselItem>

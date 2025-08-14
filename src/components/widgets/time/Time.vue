@@ -1,7 +1,5 @@
 <script setup lang="ts">
-
-import {onMounted, onUnmounted, ref} from "vue";
-import {useDateFormat} from "@vueuse/core";
+import {useDateFormat, useNow} from "@vueuse/core";
 import {WidgetCard} from "@/components/ui/widgetcard";
 import {useWidgets} from "@/composables/useWidgets.ts";
 
@@ -11,21 +9,10 @@ const {get, remove} = useWidgets()
 
 const widget = get<WidgetProps>(props.widget.uuid, props.widget)
 
-const rawdate = ref(new Date)
-let timer: number | null = null
+const now = useNow()
 
-const time = useDateFormat(rawdate, 'HH:mm')
-const date = useDateFormat(rawdate, 'ddd, DD MMM YYYY')
-
-onMounted(() => {
-  timer = setInterval(() => {
-    rawdate.value = new Date
-  }, 1000)
-})
-
-onUnmounted(() => {
-  if (typeof timer === 'number') clearInterval(timer)
-})
+const time = useDateFormat(now, 'HH:mm')
+const date = useDateFormat(now, 'ddd, DD MMM YYYY')
 </script>
 
 <template>

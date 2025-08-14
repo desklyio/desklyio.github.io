@@ -45,6 +45,7 @@ const editor = useEditor({
   },
   extensions: [
     StarterKit.configure({
+      codeBlock: false,
       heading: {
         levels: [1, 2, 3]
       },
