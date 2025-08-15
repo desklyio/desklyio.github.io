@@ -29,15 +29,19 @@ Object.values(props.widgets).map(meta => {
 })
 
 
-function addWidget(name: string, widget: WidgetProps & object) {
-  add({
+function addWidget(name: string, widget: Partial<WidgetProps> & object) {
+  const data: WidgetProps = {
     ...widget,
     uuid: uuid(),
     name: name,
     tabUuid: props.tabUuid,
     positionX: centerPosition.value.x,
     positionY: centerPosition.value.y,
-  })
+    width: widget.width ?? 300,
+    height: widget.height ?? 300
+  }
+
+  add(data)
 }
 </script>
 

@@ -18,8 +18,8 @@ const {get, remove} = useWidgets()
 
 const widget = get<ClipboardWidget>(props.widget.uuid, props.widget)
 
-const history = computed<string[]>({
-  get: () => JSON.parse(widget.value.history ?? '[]'),
+const history = computed({
+  get: () => JSON.parse(widget.value.history ?? '[]') as string[],
   set: (value) => widget.value.history = JSON.stringify(value)
 })
 
