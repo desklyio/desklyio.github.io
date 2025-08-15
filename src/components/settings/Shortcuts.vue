@@ -8,6 +8,8 @@ import {useMagicKeys} from "@vueuse/core";
 const SHORTCUTS = {
   'Next background': 'Shift+Ctrl+N',
   'Previous background': 'Shift+Ctrl+P',
+  'Next Tab': 'Shift+Ctrl+→',
+  'Previous Tab': 'Shift+Ctrl+←',
 }
 
 

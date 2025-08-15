@@ -3,6 +3,7 @@ import {onClickOutside, onLongPress, useDraggable, useMouse} from "@vueuse/core"
 import {computed, inject, onMounted, onUnmounted, type Ref, ref, useTemplateRef, watch} from "vue";
 import type DeleteTrash from "@/components/DeleteTrash.vue";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import {Glass} from "@/components/ui/glass";
 
 interface Props {
   widget: WidgetProps,
@@ -168,7 +169,10 @@ function useLongPressEdit(
           && initialY - OFFSET <= y.value && initialY + OFFSET >= y.value
       ) {
         isDraggingDisabled.value = true
-        isWidgetEditing.value = true
+
+        setTimeout(() => {
+          isWidgetEditing.value = true
+        }, 100)
       }
 
       window.removeEventListener('mouseup', mouseUp)
@@ -188,7 +192,7 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
   const size = ref<null | DOMRect>(null)
 
   const observer = new ResizeObserver(() => {
-    if (!targetRef.value) return
+    if (!targetRef.value || !isWidgetEditing.value) return
 
     resizing.value = true
     size.value = targetRef.value.getBoundingClientRect()
@@ -223,16 +227,20 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
 </script>
 
 <template>
-  <popover :open="isWidgetEditing">
-    <popover-trigger ref="widget-card" as="div"
-                     class="absolute w-full h-full select-none border border-white/10 bg-white/5 p-4 backdrop-blur-lg rounded-lg overflow-hidden"
-                     :class="classes" v-bind="$attrs" :style="style">
-      <slot :isDragging="isDragging" :isEditing="isWidgetEditing"/>
-    </popover-trigger>
-    <popover-content v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96" :data-uuid="widget.uuid">
+  <Popover :open="isWidgetEditing">
+    <PopoverTrigger ref="widget-card" as="div"
+                    class="absolute w-full h-full select-none rounded-2xl overflow-hidden"
+                    :class="classes" v-bind="$attrs" :style="style">
+      <Glass rounded="2xl">
+        <div class="p-4">
+          <slot :isDragging="isDragging" :isEditing="isWidgetEditing"/>
+        </div>
+      </Glass>
+    </PopoverTrigger>
+    <PopoverContent v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96" :data-uuid="widget.uuid">
       <div ref="menu">
         <slot name="menu"/>
       </div>
-    </popover-content>
-  </popover>
+    </PopoverContent>
+  </Popover>
 </template>

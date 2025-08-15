@@ -23,6 +23,15 @@ body {
     scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
 }
 
+.bac
+
+.glass-border {
+    box-shadow:
+            inset 1px 1px 3px rgba(255, 255, 255, 0.25),  /* top-left glow */
+            inset -1px -1px 3px rgba(255, 255, 255, 0.15), /* bottom-right glow */
+            inset 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle drop shadow for depth */
+}
+
 @layer base {
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {

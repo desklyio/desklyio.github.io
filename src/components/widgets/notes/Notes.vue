@@ -146,8 +146,13 @@ const editor = useEditor({
   }
 
   pre {
-    @apply border border-white/20 rounded-md font-mono m-1.5 px-1 py-0.5;
+    @apply  rounded-md font-mono m-1.5 px-3 py-2 backdrop-blur-xl;
     font-family: 'JetBrainsMono', monospace;
+
+    box-shadow:
+        inset 1px 1px 3px rgba(255, 255, 255, 0.25),  /* top-left glow */
+        inset -1px -1px 3px rgba(255, 255, 255, 0.15), /* bottom-right glow */
+        inset 0 4px 6px rgba(0, 0, 0, 0.1); /* subtle drop shadow for depth */
 
     code {
       @apply bg-none text-sm p-0;
