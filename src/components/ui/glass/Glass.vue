@@ -18,14 +18,30 @@ const glassClasses = computed(() => [
   'backdrop-blur-' + props.blend,
   'rounded-' + props.rounded
 ])
+
+const blendClass = computed(() => ({
+  'xs':  'backdrop-blur-xs',
+  'sm':  'backdrop-blur-sm',
+  'md':  'backdrop-blur-md',
+  'lg':  'backdrop-blur-lg',
+}))
+
+const roundedClass = computed(() => ({
+  'xs':  'rounded-xs',
+  'sm':  'rounded-sm',
+  'md':  'rounded-md',
+  'lg':  'rounded-lg',
+  'xl':  'rounded-xl',
+  '2xl':  'rounded-2xl',
+  'full':  'rounded-full',
+}))
 </script>
 
 <template>
     <div :class="cn('relative w-full h-full', props.class)">
-      <div class="'absolute top-0 lef-0 w-full h-full" :class="glassClasses"/>
-      <div class="blend absolute top-0 lef-0 w-full h-full" :class="glassClasses"/>
-      <div class="edge" :class="cn('absolute top-0 lef-0 w-full h-full', 'rounded-' + (rounded ?? 'sm'))"/>
-      <div :class="cn('absolute top-0 left-0 w-full h-full bg-white/5', 'rounded-' + (rounded ?? 'sm'))">
+      <div class="blend" :class="cn('absolute top-0 lef-0 w-full h-full', blendClass[props.blend], roundedClass[props.rounded])"/>
+      <div class="edge" :class="cn('absolute top-0 lef-0 w-full h-full', roundedClass[props.rounded])"/>
+      <div :class="cn('absolute top-0 left-0 w-full h-full bg-white/5', roundedClass[props.rounded])">
         <slot/>
       </div>
     </div>
