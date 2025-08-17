@@ -14,11 +14,6 @@ const props = withDefaults(defineProps<{
   rounded: "md"
 })
 
-const glassClasses = computed(() => [
-  'backdrop-blur-' + props.blend,
-  'rounded-' + props.rounded
-])
-
 const blendClass = computed(() => ({
   'xs':  'backdrop-blur-xs',
   'sm':  'backdrop-blur-sm',
