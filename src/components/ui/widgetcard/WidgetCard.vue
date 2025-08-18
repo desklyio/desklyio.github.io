@@ -232,7 +232,7 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
                     class="absolute w-full h-full select-none rounded-2xl overflow-hidden"
                     :class="classes" v-bind="$attrs" :style="style">
       <Glass rounded="2xl">
-        <div class="p-4">
+        <div class="p-4 w-full h-full">
           <slot :isDragging="isDragging" :isEditing="isWidgetEditing"/>
         </div>
       </Glass>
