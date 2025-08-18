@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import {computed, onUnmounted, ref, watch} from "vue";
+import BellUrl from '@public/bell.mp3?url'
+import {computed, onUnmounted, ref, useTemplateRef, watch} from "vue";
 import {WidgetCard} from "@/components/ui/widgetcard";
 import {useWidgets} from "@/composables/useWidgets.ts";
 import {Slider} from "@/components/ui/slider";
 import type {Duration} from "@/components/widgets/timer/index.ts";
 import {useWebNotification} from "@vueuse/core";
+
+type Phase = "work" | "short" | "long"
 
 interface Timer extends WidgetProps {
   duration: JSONString<Duration>
@@ -13,6 +16,8 @@ interface Timer extends WidgetProps {
 const props = defineProps<{ widget: Timer }>()
 const {get, remove} = useWidgets()
 const widget = get<Timer>(props.widget.uuid, props.widget)
+
+const audio = useTemplateRef<InstanceType<typeof HTMLAudioElement>>('audio')
 
 const duration = computed({
   get: () => JSON.parse(widget.value.duration!),
@@ -42,7 +47,6 @@ const longDuration = computed({
 
 /* ---------------- Timer Logic ---------------- */
 
-type Phase = "work" | "short" | "long"
 const phase = ref<Phase | null>(null)
 const timeLeft = ref(0)
 const isRunning = ref(false)
@@ -112,12 +116,14 @@ onUnmounted(() => pauseTimer())
 watch(timeLeft, (time) => {
   if (time > 0 || !isSupported.value || !permissionGranted.value) return
   show()
+  audio.value?.play()
 })
 </script>
 
 <template>
   <WidgetCard class="group" no-resize v-model:widget="widget" @delete="remove(props.widget.uuid)">
     <template #default>
+      <audio :src="BellUrl" class="d-none" ref="audio"/>
       <div class="text-white flex justify-between text-2xl items-start">
         <div class="flex flex-col min-w-[100px] items-center justify-center">
           <span class="font-mono">{{ delta }}</span>

@@ -24,7 +24,7 @@ export default defineConfig((config) => ({
                 theme_color: '#3584ff',
                 icons: [
                     {
-                        src: '/__assets__/favicon.png',
+                        src: '/favicon.png',
                         sizes: '256x256',
                         type: 'image/png'
                     },
@@ -37,6 +37,7 @@ export default defineConfig((config) => ({
     resolve: {
         alias: {
             '@': path.resolve(__dirname, './src'),
+            '@public': path.resolve(__dirname, './public'),
         },
     },
 }))

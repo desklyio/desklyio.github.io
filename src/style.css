@@ -6,12 +6,12 @@
 
 @font-face {
     font-family: "Karla";
-    src: url('/__assets__/Karla-Regular.ttf')
+    src: url('/Karla-Regular.ttf')
 }
 
 @font-face {
     font-family: 'Karla';
-    src: url('/__assets__/Inter-Variable.ttf');
+    src: url('/Inter-Variable.ttf');
     unicode-range: U+0400-04FF;
 }
 
