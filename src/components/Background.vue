@@ -76,7 +76,7 @@ onUnmounted(() => clearInterval(id.value))
 </script>
 
 <template>
-  <div class="bg-black h-screen w-screen overflow-hidden">
+  <div class="bg-black h-screen w-screen overflow-hidden brightness-[80%]">
     <video ref="primary"
            class="h-screen w-screen absolute top-0 object-cover transition-opacity ease-in duration-500" autoplay muted
            loop
