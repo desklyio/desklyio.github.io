@@ -3,6 +3,7 @@ import {EditorContent, useEditor} from "@tiptap/vue-3";
 import {StarterKit} from "@tiptap/starter-kit";
 import {TaskList} from "@tiptap/extension-task-list";
 import {TaskItem} from "@tiptap/extension-task-item";
+import Typography from '@tiptap/extension-typography'
 import {Link} from "@tiptap/extension-link";
 import {WidgetCard} from "@/components/ui/widgetcard";
 import {useWidgets} from "@/composables/useWidgets.ts";
@@ -55,6 +56,7 @@ const editor = useEditor({
         }
       }
     }),
+    Typography,
     CodeBlockLowlight.configure({lowlight}),
     Link.configure({
       HTMLAttributes: {

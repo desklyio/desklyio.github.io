@@ -1607,6 +1607,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-text/-/extension-text-2.23.1.tgz"
   integrity sha512-XK0D/eyS1Vm5yUrCtkS0AfgyKLJqpi8nJivCOux/JLhhC4x87R1+mI8NoFDYZJ5ic/afREPSBB8jORqOi0qIHg==
 
+"@tiptap/extension-typography@^3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-typography/-/extension-typography-3.2.0.tgz#d230bb9969da742bb9bf513491ea16a9969a49b4"
+  integrity sha512-6q8hcj+K/EU4WGmHuxwLcGeEnQ1zXh5QQLH3pgT1r/iDtZTdWjLBabZxJkTP7xBOfAH/xoQj+sRbuWeKBtf+xQ==
+
 "@tiptap/pm@^2.23.1":
   version "2.23.1"
   resolved "https://registry.npmjs.org/@tiptap/pm/-/pm-2.23.1.tgz"
