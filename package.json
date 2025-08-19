@@ -19,7 +19,7 @@
     "@tiptap/pm": "^2.23.1",
     "@tiptap/starter-kit": "^2.23.1",
     "@tiptap/vue-3": "^2.23.1",
-    "@vueuse/core": "^13.6.0",
+    "@vueuse/core": "^13.7.0",
     "@vueuse/integrations": "^13.5.0",
     "@vueuse/motion": "^3.0.3",
     "@vueuse/rxjs": "^13.6.0",

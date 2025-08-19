@@ -4,10 +4,13 @@ import {computed, inject, onMounted, onUnmounted, type Ref, ref, useTemplateRef,
 import type DeleteTrash from "@/components/DeleteTrash.vue";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {Glass} from "@/components/ui/glass";
+import type {ClassValue} from "clsx";
+import {cn} from "@/lib/utils.ts";
 
 interface Props {
   widget: WidgetProps,
-  noResize?: true
+  noResize?: true,
+  class?: ClassValue
 }
 
 interface Emits {
@@ -58,8 +61,8 @@ const style = computed(() => ({
   left: `${x.value}px`,
   transform: isDragging.value ? 'scale(1.01)' : '',
   transition: 'transform 0.2s ease ' + (transitionActive.value ? 'left 0.2s ease, top 0.2s ease' : ''),
-  width: (props.noResize ? props.widget.width : size.value?.width ?? props.widget.width) + 'px',
-  height: (props.noResize ? props.widget.height : size.value?.height ?? props.widget.height) + 'px',
+  width: (props.noResize ? 'auto' : size.value?.width ?? props.widget.width) + 'px',
+  height: (props.noResize ? 'auto' : size.value?.height ?? props.widget.height) + 'px',
 }))
 
 const classes = computed(() => ({
@@ -229,12 +232,10 @@ function useResize(targetRef: Ref<HTMLElement | null>) {
 <template>
   <Popover :open="isWidgetEditing">
     <PopoverTrigger ref="widget-card" as="div"
-                    class="absolute w-full h-full select-none rounded-2xl overflow-hidden"
+                    class="absolute select-none rounded-2xl overflow-hidden"
                     :class="classes" v-bind="$attrs" :style="style">
-      <Glass rounded="2xl">
-        <div class="p-4 w-full h-full">
+      <Glass rounded="2xl" :class="cn('p-4 w-full h-full', props.class)">
           <slot :isDragging="isDragging" :isEditing="isWidgetEditing"/>
-        </div>
       </Glass>
     </PopoverTrigger>
     <PopoverContent v-if="'menu' in $slots" :side-offset="5" side-flip class="min-w-96" :data-uuid="widget.uuid">

@@ -15,15 +15,11 @@ const emits = defineEmits(['click'])
 <template>
   <TooltipProvider>
     <Tooltip>
-      <TooltipTrigger
-          class="rounded-full w-[35px] h-[35px] "
-          @click="emits('click')">
-        <Glass rounded="full" class="cursor-pointer text-white  w-[35px] h-[35px]">
-          <div class=" w-full h-full flex justify-center items-center">
-            <span class="w-[16px]">
+      <TooltipTrigger @click="emits('click')">
+        <Glass rounded="full" class="cursor-pointer text-white overflow-hidden w-[35px] h-[35px] flex justify-center items-center">
+          <span class="w-[16px]">
             <i :class="icon"/>
             </span>
-          </div>
         </Glass>
 
       </TooltipTrigger>

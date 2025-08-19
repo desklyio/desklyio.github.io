@@ -38,6 +38,7 @@ export default defineConfig((config) => ({
         alias: {
             '@': path.resolve(__dirname, './src'),
             '@public': path.resolve(__dirname, './public'),
+            '@icons': path.resolve(__dirname, './node_modules/bootstrap-icons/icons'),
         },
     },
 }))
