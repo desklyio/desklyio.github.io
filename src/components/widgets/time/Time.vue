@@ -17,8 +17,8 @@ const date = useDateFormat(now, 'ddd, DD MMM YYYY')
 
 <template>
   <WidgetCard no-resize v-model:widget="widget" @delete="remove(props.widget.uuid)">
-    <div class="text-center">
-      <h1 class="text-8xl text-white">{{ time }}</h1>
+    <div class="text-center px-4">
+      <h1 class="text-7xl text-white">{{ time }}</h1>
       <h3 class="text-2xl text-center text-white/50">{{ date }}</h3>
     </div>
   </WidgetCard>

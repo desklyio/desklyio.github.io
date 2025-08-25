@@ -1,13 +1,4 @@
-import Timer from './Timer.vue'
-
-export type ActivityType = 'work' | 'short' | 'long'
-export type Duration = Record<ActivityType, number>
-
-export const DEFAULT_DURATION: Duration = {
-    work: 25,
-    short: 5,
-    long: 30
-}
+import Timer, {type TimerProps} from './Timer.vue'
 
 export default {
     meta: {
@@ -15,11 +6,10 @@ export default {
         icon: 'bi-stopwatch',
         shortcut: 'Shift+Ctrl+R',
         initial: {
-            width: 320,
-            height: 100,
-            activities: '[]',
-            duration: JSON.stringify(DEFAULT_DURATION)
-        }
+            durationWork: 25,
+            durationShort: 5,
+            durationLong: 30
+        } as TimerProps
     },
     component: Timer
 } as WidgetComponent
